@@ -1,0 +1,135 @@
+from tkinter import *
+import pygame
+import os
+import nustfm as fm
+
+
+window = Tk() 
+window.geometry("600x400")
+window.resizable(False, False)
+#window.title("NUST FM")
+
+#pg.mixer.init()
+
+#def __init__(self,window):
+window = window
+# Title of the window
+window.title("MusicPlayer")
+# Window Geometry
+#window.geometry("1000x200+200+200")
+# Initiating Pygame
+pygame.init()
+# Initiating Pygame Mixer
+pygame.mixer.init()
+# Declaring track Variable
+track = StringVar()
+# Declaring Status Variable
+status = StringVar()
+
+def playsong():
+    try:
+        global playbtn
+        # Displaying Selected Song title
+        status.set(playlist.get(ACTIVE))
+        # Displaying Status
+        status.set("Playing")
+        # Loading Selected Song
+        pygame.mixer.music.load(playlist.get(ACTIVE))
+        # Playing Selected Song
+        pygame.mixer.music.play()
+        playbtn.config(command=pausesong) #type: ignore
+    except:
+        print("No music to play")
+
+def pausesong():
+    global playbtn
+    # Displaying Status
+    status.set("Paused")
+    # Paused Song
+    pygame.mixer.music.pause()
+    playbtn.config(command=unpausesong) #type: ignore
+
+playing = False
+
+def playbutton(play_status):
+    while True:
+        if play_status == False:
+            playsong()
+            play_status = True
+            break
+
+        elif play_status == True:
+            pausesong()
+            play_status = False
+            break
+
+    return play_status
+
+    #print(str(play_status))
+
+def play_callback():
+    playbutton(playing)
+    print(str(playbutton(playing)))
+    
+
+def unpausesong():
+    # It will Display the  Status
+    status.set("Playing")
+    # Playing back Song
+    pygame.mixer.music.unpause()
+    playbtn.config(command=pausesong)  # type: ignore
+
+def stopsong():
+    # Displaying Status
+    status.set("Stopped")
+    # Stopped Song
+    pygame.mixer.music.stop()
+
+def nextsong():
+    pass
+
+def prevsong():
+    pass
+
+# Creating the Track Frames for Song label & status label
+trackframe = LabelFrame(window,text="Song Track",font=("times new roman",15,"bold"),bg="Navyblue",fg="white",bd=5,relief=GROOVE)
+trackframe.place(x=0,y=0,width=600,height=100)
+# Inserting Song Track Label
+songtrack = Label(trackframe,textvariable=track,width=20,font=("times new roman",24,"bold"),bg="Orange",fg="gold").grid(row=0,column=0,padx=10,pady=5)
+# Inserting Status Label
+trackstatus = Label(trackframe,textvariable=status,font=("times new roman",24,"bold"),bg="orange",fg="gold").grid(row=0,column=1,padx=10,pady=5)
+
+# Creating Button Frame
+buttonframe = LabelFrame(window,text="Control Panel",font=("times new roman",15,"bold"),bg="grey",fg="white",bd=5,relief=GROOVE)
+buttonframe.place(x=0,y=100,width=600,height=100)
+# Inserting Play Button
+#play = fm.LinkedList.play(song)
+prevbtn = Button(buttonframe,text="PREVIOUS",command=prevsong,width=10,height=1,font=("times new roman",16,"bold"),fg="navyblue",bg="pink").grid(row=0,column=0,padx=10,pady=5)
+# Inserting Pause Button
+playbtn = Button(buttonframe,text="PLAY",command=play_callback,width=8,height=1,font=("times new roman",16,"bold"),fg="navyblue",bg="pink").grid(row=0,column=1,padx=10,pady=5)
+# Inserting Unpause Button
+nextbtn = Button(buttonframe,text="NEXT",command=nextsong,width=10,height=1,font=("times new roman",16,"bold"),fg="navyblue",bg="pink").grid(row=0,column=2,padx=10,pady=5)
+# Inserting Stop Button
+stopbtn = Button(buttonframe,text="STOP",command=stopsong,width=10,height=1,font=("times new roman",16,"bold"),fg="navyblue",bg="pink").grid(row=0,column=3,padx=10,pady=5)
+
+# Creating Playlist Frame
+songsframe = LabelFrame(window,text="Song Playlist",font=("times new roman",15,"bold"),bg="grey",fg="white",bd=5,relief=GROOVE)
+songsframe.place(x=0,y=200,width=600,height=200)
+# Inserting scrollbar
+scrol_y = Scrollbar(songsframe,orient=VERTICAL)
+# Inserting Playlist listbox
+playlist = Listbox(songsframe,yscrollcommand=scrol_y.set,selectbackground="gold",selectmode=SINGLE,font=("times new roman",12,"bold"),bg="silver",fg="navyblue",bd=5,relief=GROOVE)
+# Applying Scrollbar to listbox
+scrol_y.pack(side=RIGHT,fill=Y)
+scrol_y.config(command=playlist.yview)
+playlist.pack(fill=BOTH)
+# Changing Directory for fetching Songs
+os.chdir("C:\\Users\\leoic\\Documents\\Veikko\\dsa\\songs")
+# Fetching Songs
+songtracks = os.listdir()
+# Inserting Songs into Playlist
+for track in songtracks:
+    playlist.insert(END,track)
+
+
+window.mainloop()
