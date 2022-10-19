@@ -1,0 +1,119 @@
+import pygame
+# Functions
+
+
+def add():
+    pass
+
+
+def remove():
+    pass
+
+
+def repeat():
+    pass
+
+
+def search():
+    pass
+
+
+# Linked List Setup
+
+class Node:
+    def __init__(self, song=None):
+       self.song = song
+       self.nextsong = None
+       self.prevsong = None
+
+class LinkedList:
+    def __init__(self):
+        self.head = None
+        self.current = self.head
+    
+    def add_to_empty(self, song):
+        if self.head is None:
+            new_song = Node(song)
+            self.head = new_song
+        else:
+            print("List contains songs")
+
+    def add_to_start(self, song):
+        if self.head is None:
+            new_song = Node(song)
+            self.head = new_song
+            print("Song added")
+            return
+        new_song = Node(song)
+        new_song.nextsong = self.head  # type: ignore
+        self.head.prevsong = new_song  # type: ignore
+        self.nextsong = self.head
+
+    def add_to_end(self, song):
+        if self.head is None:
+            new_song = Node(song)
+            self.head = new_song
+            return
+        n = self.head
+        while n.nextsong is not None:
+            n = n.nextsong
+        new_song = Node(song)
+        n.nextsong = new_song  # type: ignore
+        new_song.prevsong = n  # type: ignore
+
+    def add_after(self, x, song):
+        if self.head is None:
+            print("Playlist is empty")
+            return
+        else:
+            n = self.head
+            while n is not None:
+                if n.song == x:
+                    break
+                n = n.nextsong
+            if n is None:
+                print("Song is not in the playlist")
+            else:
+                new_song = Node(song)
+                new_song.prevsong = n  # type: ignore
+                new_song.nextsong = n.nextsong
+                if n.nextsong is not None:
+                    n.nextsong.prevsong = new_song
+                n.nextsong = new_song  # type: ignore
+        
+    def play(self):
+        if self.head is None:
+            print("Playlist is empty")
+            return
+        else:
+            n = self.head
+            #while n is not None:
+            #    pass 452554469
+
+    def delete_at_start(self):
+        if self.start_node is None:
+            print("The list has no element to delete")
+            return 
+        if self.start_node.nref is None:
+            self.start_node = None
+            return
+        self.start_node = self.start_node.nref
+        self.start_prev = None
+
+    def delete_at_end(self):
+        if self.start_node is None:
+            print("The list has no element to delete")
+            return 
+        if self.start_node.nref is None:
+            self.start_node = None
+            return
+        n = self.start_node
+        while n.nref is not None:
+            n = n.nref
+        n.pref.nref = None
+
+    
+
+
+
+playlist = LinkedList()
