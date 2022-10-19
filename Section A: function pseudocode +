@@ -1,3 +1,19 @@
+initialise_pseudocode:
+initialise music_player 
+initialise playlist 
+initialise tracklist 
+initialise repeat function 
+initialise search function 
+initialise add_remove function
+play musicPlayer 
+play tracks from playlist 
+repeat tracks as necessary 
+search for specific tracks 
+add_remove tracks if necessary
+exit
+end
+//
+function_pseudocode:
 function create_playlist()
 tracks = 100
 linked_list = create_new_linked_list()
